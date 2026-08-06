@@ -6,3 +6,4 @@ class Chunk:
     document_id: str
     text: str
     metadata: dict = field(default_factory=dict)
+    embedding: list[float] | None = None

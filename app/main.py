@@ -1,15 +1,71 @@
-# from app.settings import *
-# print(f"APP_NAME: {APP_NAME}")
-# print(f"APP_VERSION: {APP_VERSION}")
-# print(f"ENVIRONMENT: {ENVIRONMENT}")
-# print(f"LLM_PROVIDER: {LLM_PROVIDER}")
-# print(f"LLM_MODEL: {LLM_MODEL}")
-# print(f"VECTOR_DB_PROVIDER: {VECTOR_DB_PROVIDER}")
-# print(f"EMBEDDING_MODEL: {EMBEDDING_MODEL}")
-# print(f"TOP_K: {TOP_K}")
-# print(f"CHUNK_SIZE: {CHUNK_SIZE}")
-# print(f"CHUNK_OVERLAP: {CHUNK_OVERLAP}")
+from app.settings import WIKIPEDIA_DUMP
 
-from ingestion.pipeline import IngestionPipeline
-pipeline = IngestionPipeline("data/sample.xml")
-pipeline.run()
+from ingestion.pipeline import (
+    IngestionPipeline,
+)
+
+from storage.factory import (
+    StorageFactory,
+)
+
+
+def main():
+
+    pipeline = IngestionPipeline(
+        WIKIPEDIA_DUMP
+    )
+
+    vector_store = (
+        StorageFactory.create_vector_store()
+    )
+
+    sparse_store = (
+        StorageFactory.create_sparse_store()
+    )
+
+    try:
+
+        vector_store.create_collection()
+
+        total_chunks = 0
+
+        all_chunks = []
+
+        for result in pipeline.run():
+
+            vector_store.add(
+                result.chunks
+            )
+
+            all_chunks.extend(
+                result.chunks
+            )
+
+            total_chunks += len(
+                result.chunks
+            )
+
+            print(
+                f"Indexed: {result.document.title} "
+                f"({len(result.chunks)} chunks)"
+            )
+
+        sparse_store.build(
+            all_chunks
+        )
+
+        print(
+            f"\nTotal chunks indexed: {total_chunks}"
+        )
+
+    finally:
+
+        pipeline.close()
+
+        vector_store.close()
+
+        sparse_store.close()
+
+
+if __name__ == "__main__":
+    main()
