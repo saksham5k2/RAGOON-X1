@@ -1,5 +1,9 @@
 import pickle
 
+from app.settings import (
+    BM25_INDEX_PATH,
+)
+
 from retrieval.sparse.index import InvertedIndex
 from retrieval.sparse.bm25 import BM25
 
@@ -14,9 +18,39 @@ class BM25Store:
             self.index
         )
 
-    def add(self, chunks):
+    # -------------------------
+    # Add Chunks
+    # -------------------------
 
-        self.index.add(chunks)
+    def add(
+        self,
+        chunks,
+    ):
+
+        self.index.add(
+            chunks
+        )
+
+    # -------------------------
+    # Build + Save Index
+    # -------------------------
+
+    def build(
+        self,
+        chunks,
+    ):
+
+        self.add(
+            chunks
+        )
+
+        self.save(
+            BM25_INDEX_PATH
+        )
+
+    # -------------------------
+    # Search
+    # -------------------------
 
     def search(
         self,
@@ -29,25 +63,51 @@ class BM25Store:
             top_k=limit,
         )
 
+    # -------------------------
+    # Save
+    # -------------------------
+
     def save(
         self,
         path,
     ):
 
-        with open(path, "wb") as f:
+        with open(
+            path,
+            "wb",
+        ) as f:
+
             pickle.dump(
                 self.index,
                 f,
             )
+
+    # -------------------------
+    # Load
+    # -------------------------
 
     def load(
         self,
         path,
     ):
 
-        with open(path, "rb") as f:
-            self.index = pickle.load(f)
+        with open(
+            path,
+            "rb",
+        ) as f:
+
+            self.index = pickle.load(
+                f
+            )
 
         self.retriever = BM25(
             self.index
         )
+
+    # -------------------------
+    # Close
+    # -------------------------
+
+    def close(self):
+
+        pass

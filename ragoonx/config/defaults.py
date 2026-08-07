@@ -1,0 +1,54 @@
+DEFAULT_CONFIG = {
+
+    "llm": {
+
+        "provider": "groq",
+
+        "model": "llama-3.3-70b-versatile",
+
+        "api_key": "${GROQ_API_KEY}",
+
+        "base_url": "${GROQ_BASE_URL}",
+
+        "temperature": 0.0,
+
+        "max_tokens": 512,
+    },
+
+    "embedding": {
+
+        "provider": "huggingface",
+
+        "model": "BAAI/bge-small-en-v1.5",
+    },
+
+    "retrieval": {
+
+        "top_k": 10,
+    },
+
+    "chunking": {
+
+        "strategy": "recursive",
+
+        "size": 512,
+
+        "overlap": 100,
+    },
+
+    "storage": {
+
+        "provider": "qdrant",
+
+        "qdrant_path": "storage/qdrant_store",
+
+        "bm25_path": "storage/bm25.pkl",
+
+        "document_store": "storage/documents.json",
+    },
+
+    "data": {
+
+        "wikipedia_dump": "",
+    },
+}

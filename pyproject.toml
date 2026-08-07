@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ragoonx"
+version = "1.0.0"
+description = "A modular Retrieval-Augmented Generation framework."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+authors = [
+    { name = "Saksham" }
+]
+
+keywords = [
+    "rag",
+    "llm",
+    "retrieval",
+    "vector-search",
+    "qdrant",
+    "groq",
+    "ai"
+]
+
+dependencies = [
+    "sentence-transformers",
+    "transformers",
+    "qdrant-client",
+    "rank-bm25",
+    "mwparserfromhell",
+    "python-dotenv",
+    "pyyaml",
+    "openai"
+]
+
+[project.urls]
+Homepage = "https://github.com/saksham5k2/RAGOON-X1"
+
+[project.scripts]
+ragoonx = "ragoonx.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+dependencies = [
+    ...
+    "colorama",
+]

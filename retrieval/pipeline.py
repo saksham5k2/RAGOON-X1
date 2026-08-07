@@ -14,18 +14,12 @@ from retrieval.query.factory import QueryRewriterFactory
 from retrieval.query.multi_query import MultiQueryGenerator
 from retrieval.query.multi_retriever import MultiQueryRetriever
 
-from retrieval.hyde.factory import HyDEFactory
-
 from reranking.factory import RerankerFactory
 from compression.factory import CompressorFactory
 
 from retrieval.stages.query_stage import QueryStage
-from retrieval.stages.hyde_stage import HyDEStage
 from retrieval.stages.retrieval_stage import (
     RetrievalStageImpl,
-)
-from retrieval.stages.fusion_stage import (
-    FusionStage,
 )
 from retrieval.stages.reranking_stage import (
     RerankingStage,
@@ -79,6 +73,7 @@ class RetrievalPipeline:
 
         # -------------------------
         # Hybrid Retriever
+        # Dense + BM25 + RRF
         # -------------------------
 
         hybrid = HybridRetriever(
@@ -104,10 +99,6 @@ class RetrievalPipeline:
             )
         )
 
-        hyde_generator = (
-            HyDEFactory.create()
-        )
-
         reranker = (
             RerankerFactory.create()
         )
@@ -117,7 +108,7 @@ class RetrievalPipeline:
         )
 
         # -------------------------
-        # Pipeline Stages
+        # Retrieval Pipeline
         # -------------------------
 
         self.stages = [
@@ -127,15 +118,9 @@ class RetrievalPipeline:
                 multi_query_generator,
             ),
 
-            HyDEStage(
-                hyde_generator,
-            ),
-
             RetrievalStageImpl(
                 multi_query_retriever,
             ),
-
-            FusionStage(),
 
             RerankingStage(
                 reranker,
@@ -163,7 +148,10 @@ class RetrievalPipeline:
         }
 
         for stage in self.stages:
-            state = stage.run(state)
+
+            state = stage.run(
+                state
+            )
 
         return state
 

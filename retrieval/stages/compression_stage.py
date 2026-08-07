@@ -1,3 +1,5 @@
+from ragoonx.logging import logger
+
 from retrieval.stages.base import RetrievalStage
 
 
@@ -9,9 +11,15 @@ class CompressionStage(RetrievalStage):
     def run(self, state):
 
         compressed = self.compressor.compress(
-            state["reranked"]
+            state["query"],
+            state["reranked"],
         )
 
         state["compressed"] = compressed
+
+        logger.info(
+            "Compressed %d chunks.",
+            len(compressed),
+        )
 
         return state

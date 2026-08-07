@@ -1,3 +1,5 @@
+from ragoonx.logging import logger
+
 from retrieval.stages.base import RetrievalStage
 
 
@@ -15,8 +17,10 @@ class QueryStage(RetrievalStage):
 
     def run(
         self,
-        query: str,
+        state,
     ):
+
+        query = state["query"]
 
         rewritten = self.query_rewriter.rewrite(
             query
@@ -28,8 +32,28 @@ class QueryStage(RetrievalStage):
             )
         )
 
-        return {
-            "original_query": query,
-            "rewritten_query": rewritten,
-            "queries": queries,
-        }
+        logger.info(
+            "Original Query : %s",
+            query,
+        )
+
+        logger.info(
+            "Rewritten Query: %s",
+            rewritten,
+        )
+
+        logger.info(
+            "Generated Queries:"
+        )
+
+        for q in queries:
+
+            logger.info(
+                "  • %s",
+                q,
+            )
+
+        state["rewritten_query"] = rewritten
+        state["queries"] = queries
+
+        return state

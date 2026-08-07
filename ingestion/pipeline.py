@@ -117,8 +117,8 @@ class IngestionPipeline:
             ]
 
             embeddings = (
-                self.embedding_model.embed(
-                    texts
+                self.embedding_model.embed_documents(
+                texts
                 )
             )
 

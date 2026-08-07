@@ -34,3 +34,16 @@ class SentenceTransformerEmbedding(BaseEmbeddingModel):
         )
 
         return embedding.tolist()
+
+    # -------------------------
+    # Backward compatibility
+    # -------------------------
+
+    def embed(
+        self,
+        texts,
+    ):
+
+        return self.embed_documents(
+            texts
+        )

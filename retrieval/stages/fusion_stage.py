@@ -1,3 +1,5 @@
+from ragoonx.logging import logger
+
 from retrieval.stages.base import RetrievalStage
 
 
@@ -20,8 +22,9 @@ class FusionStage(RetrievalStage):
 
         state["retrieved"] = fused
 
-        print(
-            f"\nFused {len(fused)} results."
+        logger.info(
+            "Fused %d results.",
+            len(fused),
         )
 
         return state

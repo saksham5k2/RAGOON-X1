@@ -17,14 +17,9 @@ class RagPipeline:
         query: str,
     ):
 
-        retrieved = self.retrieval.retrieve(
+        chunks = self.retrieval.retrieve(
             query
         )
-
-        chunks = [
-            chunk
-            for chunk, _ in retrieved
-        ]
 
         response = self.generation.generate(
             query,

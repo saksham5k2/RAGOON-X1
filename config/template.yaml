@@ -1,0 +1,40 @@
+app:
+  name: RAGOON-X1
+  version: 1.0.0
+
+llm:
+  provider: groq
+  model: llama-3.3-70b-versatile
+  api_key: ${GROQ_API_KEY}
+  temperature: 0
+  max_tokens: 512
+
+embedding:
+  provider: sentence-transformers
+  model: BAAI/bge-small-en-v1.5
+  dimension: 384
+
+chunking:
+  strategy: recursive
+  chunk_size: 750
+  overlap: 150
+
+retrieval:
+  top_k: 10
+  rewrite: true
+  multi_query: true
+  rerank: true
+  compress: true
+
+storage:
+  provider: qdrant
+  collection_name: wikipedia
+  qdrant_path: storage/qdrant_store
+  bm25_path: storage/bm25.pkl
+  document_store: storage/documents.json
+
+data:
+  source: data/
+
+logging:
+  level: INFO

@@ -10,7 +10,9 @@ class CrossEncoderReranker(BaseReranker):
         model_name: str,
     ):
 
-        self.model = CrossEncoder(model_name)
+        self.model = CrossEncoder(
+            model_name
+        )
 
     def rerank(
         self,
@@ -23,11 +25,14 @@ class CrossEncoderReranker(BaseReranker):
             return []
 
         sentence_pairs = [
+
             (
                 query,
                 chunk.text,
             )
+
             for chunk, _ in results
+
         ]
 
         scores = self.model.predict(
@@ -53,4 +58,12 @@ class CrossEncoderReranker(BaseReranker):
             reverse=True,
         )
 
-        return reranked[:top_k]
+        # Return only Chunk objects
+        return [
+
+            chunk
+
+            for chunk, _
+            in reranked[:top_k]
+
+        ]

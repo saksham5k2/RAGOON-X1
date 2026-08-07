@@ -1,0 +1,8 @@
+sentence-transformers
+transformers
+qdrant-client
+rank-bm25
+mwparserfromhell
+python-dotenv
+pyyaml
+openai

@@ -1,36 +1,11 @@
-from retrieval.stages.base import RetrievalStage
+from abc import ABC, abstractmethod
 
 
-class ParentStage(RetrievalStage):
+class ParentStage(ABC):
 
-    def __init__(
-        self,
-        parent_retriever,
-    ):
-        self.parent_retriever = (
-            parent_retriever
-        )
-
+    @abstractmethod
     def run(
         self,
         state,
     ):
-
-        chunks = state["retrieved"]
-
-        documents = (
-            self.parent_retriever.retrieve(
-                chunks
-            )
-        )
-
-        state["parent_documents"] = (
-            documents
-        )
-
-        print(
-            f"\nExpanded to "
-            f"{len(documents)} parent documents."
-        )
-
-        return state
+        pass

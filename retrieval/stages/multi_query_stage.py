@@ -1,3 +1,5 @@
+from ragoonx.logging import logger
+
 from retrieval.stages.base import RetrievalStage
 
 
@@ -23,10 +25,16 @@ class MultiQueryStage(RetrievalStage):
             base_query
         )
 
-        print("\nGenerated Queries:")
+        logger.info(
+            "Generated Queries:"
+        )
 
         for query in queries:
-            print(f" • {query}")
+
+            logger.info(
+                " • %s",
+                query,
+            )
 
         state["queries"] = queries
 

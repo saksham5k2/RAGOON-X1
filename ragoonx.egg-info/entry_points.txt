@@ -1,0 +1,2 @@
+[console_scripts]
+ragoonx = ragoonx.cli:main
