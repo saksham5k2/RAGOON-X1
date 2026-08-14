@@ -1,4 +1,4 @@
-from app.settings import WIKIPEDIA_DUMP
+from ingestion.loaders import JSONLDocumentLoader
 
 from ingestion.pipeline import (
     IngestionPipeline,
@@ -9,10 +9,26 @@ from storage.factory import (
 )
 
 
+DATASET_PATH = (
+    "data/raw/stencore/"
+    "stencore_10k.jsonl"
+)
+
+
 def main():
 
+    loader = JSONLDocumentLoader(
+        DATASET_PATH,
+        text_field="text",
+        metadata_fields=[
+            "source",
+            "source_url",
+            "license",
+        ],
+    )
+
     pipeline = IngestionPipeline(
-        WIKIPEDIA_DUMP
+        loader
     )
 
     vector_store = (

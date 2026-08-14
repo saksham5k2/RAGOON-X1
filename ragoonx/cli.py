@@ -20,9 +20,15 @@ def main():
         help="Start interactive chat",
     )
 
-    subparsers.add_parser(
+    ingest_parser = subparsers.add_parser(
         "ingest",
         help="Run document ingestion",
+    )
+
+    ingest_parser.add_argument(
+        "path",
+        nargs="?",
+        help="Path to the document source",
     )
 
     subparsers.add_parser(
@@ -33,7 +39,7 @@ def main():
     subparsers.add_parser(
         "doctor",
         help="Run diagnostics",
-)
+    )
 
     args = parser.parse_args()
 
@@ -46,7 +52,9 @@ def main():
     if args.command == "doctor":
 
         from .doctor import Doctor
+
         Doctor.run()
+
         return
 
     rag = Ragoon()
@@ -59,7 +67,9 @@ def main():
 
         elif args.command == "ingest":
 
-            rag.ingest()
+            rag.ingest(
+                args.path
+            )
 
         else:
 

@@ -14,13 +14,13 @@ class RetrievalStageImpl(RetrievalStage):
         state,
     ):
 
-        retrieval_query = state.get(
-            "hyde_document",
-            state["rewritten_query"],
+        retrieval_queries = state.get(
+            "generated_queries",
+            [state["rewritten_query"]],
         )
 
         retrieved = self.retriever.retrieve(
-            retrieval_query,
+            retrieval_queries,
             top_k=state["top_k"] * 3,
         )
 

@@ -1,4 +1,5 @@
 from ragoonx.logging import logger
+import app.settings as settings
 
 from retrieval.stages.base import RetrievalStage
 
@@ -21,5 +22,26 @@ class CompressionStage(RetrievalStage):
             "Compressed %d chunks.",
             len(compressed),
         )
+
+        if settings.DEBUG:
+
+            print("\n" + "=" * 70)
+            print("DEBUG — COMPRESSED CONTEXT")
+            print("=" * 70)
+
+            for i, chunk in enumerate(
+                compressed,
+                1,
+            ):
+
+                print(
+                    f"\n--- Chunk {i} ---"
+                )
+
+                print(
+                    chunk.text[:1000]
+                )
+
+            print("=" * 70 + "\n")
 
         return state

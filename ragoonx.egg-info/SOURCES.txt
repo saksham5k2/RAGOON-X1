@@ -15,6 +15,12 @@ compression/base.py
 compression/embedding_compressor.py
 compression/factory.py
 compression/sentence_splitter.py
+config/__init__.py
+config/defaults.py
+config/loader.py
+config/models.py
+config/validator.py
+data/raw/stencore/download.py
 embeddings/__init__.py
 embeddings/base.py
 embeddings/factory.py
@@ -33,6 +39,9 @@ ingestion/parser.py
 ingestion/pipeline.py
 ingestion/test_parser.py
 ingestion/wikipedia_parser.py
+ingestion/loaders/__init__.py
+ingestion/loaders/base.py
+ingestion/loaders/jsonl.py
 models/chunk.py
 models/document.py
 models/ingestion_result.py
@@ -41,6 +50,7 @@ rag/pipeline.py
 rag/response.py
 ragoonx/__init__.py
 ragoonx/cli.py
+ragoonx/framework.py
 ragoonx.egg-info/PKG-INFO
 ragoonx.egg-info/SOURCES.txt
 ragoonx.egg-info/dependency_links.txt
@@ -48,9 +58,18 @@ ragoonx.egg-info/entry_points.txt
 ragoonx.egg-info/requires.txt
 ragoonx.egg-info/top_level.txt
 ragoonx/config/__init__.py
+ragoonx/config/defaults.py
 ragoonx/config/loader.py
+ragoonx/config/models.py
 ragoonx/config/settings.py
+ragoonx/config/sync.py
 ragoonx/core/ragoon.py
+ragoonx/doctor/__init__.py
+ragoonx/doctor/checker.py
+ragoonx/doctor/checks.py
+ragoonx/doctor/report.py
+ragoonx/logging/__init__.py
+ragoonx/logging/logger.py
 reranking/__init__.py
 reranking/base.py
 reranking/cross_encoder.py
@@ -103,6 +122,7 @@ tests/test_bm25.py
 tests/test_bm25_stats.py
 tests/test_bm25_store.py
 tests/test_index.py
+tests/test_jsonl_loader.py
 tests/test_qdrant.py
 tests/test_qdrant_count.py
 tests/test_retrieval.py

@@ -1,6 +1,7 @@
 app
 chunking
 compression
+config
 data
 embeddings
 evaluation

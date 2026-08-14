@@ -9,6 +9,10 @@ from ingestion.pipeline import (
     IngestionPipeline,
 )
 
+from ingestion.loaders import (
+    JSONLDocumentLoader,
+)
+
 from storage.factory import (
     StorageFactory,
 )
@@ -44,10 +48,47 @@ class Ragoon:
             query
         )
 
-    def ingest(self):
+    def ingest(
+        self,
+        path=None,
+    ):
+
+        # ---------------------------------
+        # Determine ingestion source
+        # ---------------------------------
+
+        source_path = (
+            path
+            if path
+            else settings.WIKIPEDIA_DUMP
+        )
+
+        if not source_path:
+
+            raise ValueError(
+                "No ingestion source provided."
+            )
+
+        # ---------------------------------
+        # Create document loader
+        # ---------------------------------
+
+        loader = JSONLDocumentLoader(
+            source_path,
+            text_field="text",
+            metadata_fields=[
+                "source",
+                "source_url",
+                "license",
+            ],
+        )
+
+        # ---------------------------------
+        # Create ingestion pipeline
+        # ---------------------------------
 
         pipeline = IngestionPipeline(
-            settings.WIKIPEDIA_DUMP
+            loader
         )
 
         vector_store = (

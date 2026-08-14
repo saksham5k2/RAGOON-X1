@@ -2,8 +2,8 @@ import os
 from app.config import *
 
 # Debugging
-DEBUG = True
-MAX_PAGES = 10       
+DEBUG = False
+MAX_PAGES = None
 PRINT_CHUNKS = False
 
 

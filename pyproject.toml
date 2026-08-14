@@ -2,6 +2,7 @@
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
+
 [project]
 name = "ragoonx"
 version = "1.0.0"
@@ -35,19 +36,18 @@ dependencies = [
     "openai"
 ]
 
+
 [project.urls]
 Homepage = "https://github.com/saksham5k2/RAGOON-X1"
+
 
 [project.scripts]
 ragoonx = "ragoonx.cli:main"
 
+
 [tool.setuptools]
 include-package-data = true
 
+
 [tool.setuptools.packages.find]
 where = ["."]
-
-dependencies = [
-    ...
-    "colorama",
-]

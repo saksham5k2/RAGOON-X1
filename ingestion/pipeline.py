@@ -1,4 +1,3 @@
-from ingestion.wikipedia_parser import WikipediaParser
 from ingestion.cleaner import DocumentCleaner
 from ingestion.metadata import MetadataExtractor
 
@@ -20,9 +19,9 @@ from app.settings import (
 
 class IngestionPipeline:
 
-    def __init__(self, xml_path):
+    def __init__(self, loader):
 
-        self.parser = WikipediaParser(xml_path)
+        self.loader = loader
 
         self.cleaner = DocumentCleaner()
 
@@ -46,11 +45,11 @@ class IngestionPipeline:
 
     def run(self):
         """
-        Pipeline
+        Generic ingestion pipeline
 
-        Wikipedia XML
+        Document Loader
               ↓
-        Parser
+        Document
               ↓
         Cleaner
               ↓
@@ -66,7 +65,7 @@ class IngestionPipeline:
         """
 
         for i, document in enumerate(
-            self.parser.parse()
+            self.loader.load()
         ):
 
             if (
@@ -118,7 +117,7 @@ class IngestionPipeline:
 
             embeddings = (
                 self.embedding_model.embed_documents(
-                texts
+                    texts
                 )
             )
 
