@@ -3,14 +3,20 @@ from generation.pipeline import GenerationPipeline
 
 from rag.response import RagResponse
 
+from ragoonx.config import ConfigLoader
+
 
 class RagPipeline:
 
     def __init__(self):
 
+        config = ConfigLoader.load()
+
         self.retrieval = RetrievalPipeline()
 
-        self.generation = GenerationPipeline()
+        self.generation = GenerationPipeline(
+            config.llm
+        )
 
     def answer(
         self,

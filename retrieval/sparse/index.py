@@ -18,40 +18,78 @@ class InvertedIndex:
         # chunk_id -> document length
         self.document_lengths = {}
 
+        # Number of unique indexed chunks
         self.total_documents = 0
 
     def add(self, chunks):
 
         for chunk in chunks:
 
-            self.documents[chunk.chunk_id] = chunk
+            chunk_id = chunk.chunk_id
+
+            # ---------------------------------
+            # Prevent duplicate document counts
+            # ---------------------------------
+
+            is_new = (
+                chunk_id
+                not in self.documents
+            )
+
+            # ---------------------------------
+            # Store document
+            # ---------------------------------
+
+            self.documents[chunk_id] = chunk
+
+            # ---------------------------------
+            # Tokenize
+            # ---------------------------------
 
             tokens = self.tokenizer.tokenize(
                 chunk.text
             )
 
             self.document_lengths[
-                chunk.chunk_id
+                chunk_id
             ] = len(tokens)
 
-            self.total_documents += 1
+            # ---------------------------------
+            # Update document count
+            # ---------------------------------
+
+            if is_new:
+
+                self.total_documents += 1
+
+            # ---------------------------------
+            # Calculate term frequencies
+            # ---------------------------------
 
             frequencies = defaultdict(int)
 
             for token in tokens:
+
                 frequencies[token] += 1
+
+            # ---------------------------------
+            # Update inverted index
+            # ---------------------------------
 
             for token, frequency in frequencies.items():
 
                 self.index[token][
-                    chunk.chunk_id
+                    chunk_id
                 ] = frequency
 
-    def lookup(self, token: str):
+    def lookup(
+        self,
+        token: str,
+    ):
 
         return self.index.get(
             token,
-            {}
+            {},
         )
 
     def document_frequency(
@@ -66,6 +104,7 @@ class InvertedIndex:
     def average_document_length(self):
 
         if self.total_documents == 0:
+
             return 0
 
         return (

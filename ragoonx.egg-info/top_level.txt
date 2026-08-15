@@ -3,6 +3,7 @@ chunking
 compression
 config
 data
+dist
 embeddings
 evaluation
 generation

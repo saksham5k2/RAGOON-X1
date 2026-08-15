@@ -1,8 +1,3 @@
-from app.settings import (
-    LLM_PROVIDER,
-    LLM_MODEL,
-)
-
 from generation.openai_generator import (
     OpenAIGenerator,
 )
@@ -11,14 +6,27 @@ from generation.openai_generator import (
 class GeneratorFactory:
 
     @staticmethod
-    def create():
+    def create(
+        llm_config,
+    ):
 
-        provider = LLM_PROVIDER.lower()
+        provider = (
+            llm_config.provider.lower()
+        )
 
         if provider == "groq":
 
             return OpenAIGenerator(
-                LLM_MODEL
+
+                model_name=llm_config.model,
+
+                api_key=llm_config.api_key,
+
+                base_url=llm_config.base_url,
+
+                temperature=llm_config.temperature,
+
+                max_tokens=llm_config.max_tokens,
             )
 
         raise ValueError(

@@ -105,29 +105,69 @@ class Ragoon:
 
             total_chunks = 0
 
-            all_chunks = []
+            batch_chunks = []
+
+            batch_size = (
+                settings.INDEX_BATCH_SIZE
+            )
+
+            # ---------------------------------
+            # Process ingestion results
+            # ---------------------------------
 
             for result in pipeline.run():
 
-                vector_store.add(
-                    result.chunks
-                )
+                chunks = result.chunks
 
-                all_chunks.extend(
-                    result.chunks
+                batch_chunks.extend(
+                    chunks
                 )
 
                 total_chunks += len(
-                    result.chunks
+                    chunks
                 )
 
                 print(
                     f"Indexed: {result.document.title} "
-                    f"({len(result.chunks)} chunks)"
+                    f"({len(chunks)} chunks)"
                 )
 
-            sparse_store.build(
-                all_chunks
+                # ---------------------------------
+                # Flush batch
+                # ---------------------------------
+
+                if len(batch_chunks) >= batch_size:
+
+                    vector_store.add(
+                        batch_chunks
+                    )
+
+                    sparse_store.add(
+                        batch_chunks
+                    )
+
+                    batch_chunks = []
+
+            # ---------------------------------
+            # Flush remaining chunks
+            # ---------------------------------
+
+            if batch_chunks:
+
+                vector_store.add(
+                    batch_chunks
+                )
+
+                sparse_store.add(
+                    batch_chunks
+                )
+
+            # ---------------------------------
+            # Save BM25 index
+            # ---------------------------------
+
+            sparse_store.save(
+                settings.BM25_INDEX_PATH
             )
 
             print(

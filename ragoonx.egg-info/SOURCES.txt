@@ -59,6 +59,7 @@ ragoonx.egg-info/requires.txt
 ragoonx.egg-info/top_level.txt
 ragoonx/config/__init__.py
 ragoonx/config/defaults.py
+ragoonx/config/defaults.yaml
 ragoonx/config/loader.py
 ragoonx/config/models.py
 ragoonx/config/settings.py

@@ -5,12 +5,17 @@ from generation.response import GeneratedResponse
 
 class GenerationPipeline:
 
-    def __init__(self):
+    def __init__(
+        self,
+        llm_config,
+    ):
 
         self.prompt_builder = PromptBuilder()
 
         self.generator = (
-            GeneratorFactory.create()
+            GeneratorFactory.create(
+                llm_config
+            )
         )
 
     def generate(

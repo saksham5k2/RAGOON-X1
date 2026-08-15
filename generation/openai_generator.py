@@ -2,24 +2,27 @@ from openai import OpenAI
 
 from generation.base import BaseGenerator
 
-from app.settings import (
-    GROQ_API_KEY,
-    GROQ_BASE_URL,
-)
-
 
 class OpenAIGenerator(BaseGenerator):
 
     def __init__(
         self,
         model_name: str,
+        api_key: str,
+        base_url: str,
+        temperature: float = 0.0,
+        max_tokens: int = 512,
     ):
 
         self.model_name = model_name
 
+        self.temperature = temperature
+
+        self.max_tokens = max_tokens
+
         self.client = OpenAI(
-            api_key=GROQ_API_KEY,
-            base_url=GROQ_BASE_URL,
+            api_key=api_key,
+            base_url=base_url,
         )
 
     def generate(
@@ -38,10 +41,14 @@ class OpenAIGenerator(BaseGenerator):
                 }
             ],
 
-            temperature=0,
+            temperature=self.temperature,
 
-            max_tokens=512,
-
+            max_tokens=self.max_tokens,
         )
 
-        return response.choices[0].message.content
+        return (
+            response
+            .choices[0]
+            .message
+            .content
+        )
